@@ -6,7 +6,6 @@ import 'package:flutterrxdart/src/utils/constant.dart';
 
 class SelectedTagView extends StatefulWidget {
   final activeTags;
-
   const SelectedTagView({Key key, this.activeTags}) : super(key: key);
 
   @override
@@ -27,7 +26,24 @@ class _SelectedTagViewState extends State<SelectedTagView> {
   Widget build(BuildContext context) {
     return BlocBuilder<MovieBloc, MovieState>(builder: (context, state) {
       print("SelectedtagView - activetags : ${widget.activeTags}");
-      return _onLoading();
+
+      switch(state.status){
+        case MovieStateStatus.SUCCESS:
+          return Text(state.data.toString());
+          break;
+
+        case MovieStateStatus.LOADING:
+          return _onLoading();
+          break;
+
+        case MovieStateStatus.ERROR:
+          return _onError();
+          break;
+
+        default:
+          return _onLoading();
+          break;
+      }
     });
   }
 

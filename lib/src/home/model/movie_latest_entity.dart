@@ -1,0 +1,42 @@
+import 'package:flutterrxdart/generated/json/base/json_convert_content.dart';
+import 'package:flutterrxdart/generated/json/base/json_filed.dart';
+
+class MovieLatestEntity with JsonConvert<MovieLatestEntity> {
+	bool adult;
+	@JSONField(name: "backdrop_path")
+	dynamic backdropPath;
+	@JSONField(name: "belongs_to_collection")
+	dynamic belongsToCollection;
+	int budget;
+	List<dynamic> genres;
+	String homepage;
+	int id;
+	@JSONField(name: "imdb_id")
+	String imdbId;
+	@JSONField(name: "original_language")
+	String originalLanguage;
+	@JSONField(name: "original_title")
+	String originalTitle;
+	String overview;
+	int popularity;
+	@JSONField(name: "poster_path")
+	dynamic posterPath;
+	@JSONField(name: "production_companies")
+	List<dynamic> productionCompanies;
+	@JSONField(name: "production_countries")
+	List<dynamic> productionCountries;
+	@JSONField(name: "release_date")
+	String releaseDate;
+	int revenue;
+	int runtime;
+	@JSONField(name: "spoken_languages")
+	List<dynamic> spokenLanguages;
+	String status;
+	String tagline;
+	String title;
+	bool video;
+	@JSONField(name: "vote_average")
+	int voteAverage;
+	@JSONField(name: "vote_count")
+	int voteCount;
+}
