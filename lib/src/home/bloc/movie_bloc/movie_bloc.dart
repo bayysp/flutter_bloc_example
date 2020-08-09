@@ -1,15 +1,15 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutterrxdart/src/home/data_source/movie_data_source.dart';
 import 'package:flutterrxdart/src/home/model/movie_popular_entity.dart';
 import 'package:meta/meta.dart';
 
 part 'movie_event.dart';
+
 part 'movie_state.dart';
 
 class MovieBloc extends Bloc<MovieEvent, MovieState> {
-  MovieBloc() : super(MovieStateFetchingPopular());
+  MovieBloc() : super(MovieState.initial<MoviePopularEntity>());
 
   @override
   Stream<MovieState> mapEventToState(
@@ -17,38 +17,24 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
   ) async* {
     print("MovieBloc - current event = $event");
 
-    if(event is MovieEventFetchPopular){
-      yield MovieStateIsLoading();
+    switch(event.status){
+      case MovieEventStatus.POPULARS:
 
-      //get movie populars in json
-      final result = await MovieDataSource.instance.loadPopularMovies();
+        break;
 
-      if(result != null) {
-        print("PopularBloc - result not null , result : $result");
-        final populars = MoviePopularEntity().fromJson(result);
-        print("PopularBloc : populars data = $populars ");
-        yield MovieStatePopularFetched(populars);
-      }else{
-        yield MovieStateIsNotLoaded();
-      }
-    }else if (event is MovieEventFetchTopRated){
+      case MovieEventStatus.TOP_RATED:
+        break;
 
-      yield MovieStateTopRatedFetched();
+      case MovieEventStatus.NOW_PLAYING:
+        break;
 
-    }else if (event is MovieEventFetchNowPlaying){
+      case MovieEventStatus.LATEST:
+        break;
 
-      yield MovieStateNowPlayingFetched();
+      case MovieEventStatus.UPCOMING:
+        break;
 
-    }else if (event is MovieEventFetchLatest){
-
-      yield MovieStateLatestFetched();
-
-    }else if (event is MovieEventFetchUpcoming){
-
-      yield MovieStateUpcomingFetched();
-
-    }else{
-      yield MovieStateIsNotLoaded();
     }
+    
   }
 }

@@ -18,25 +18,16 @@ class PopularBloc extends Bloc<PopularEvent, PopularState> {
   Stream<PopularState> mapEventToState(
     PopularEvent event,
   ) async* {
+    print("PopularBloc - current event = $event ");
     switch (event.status) {
       case PopularEventStatus.DEFAULT:
-        print("PopularBloc - current event = $event ");
         yield PopularState.onLoading<MoviePopularEntity>();
 
         try {
-          final populars = await MovieDataSource.instance.loadPopularMovies();
+          final populars = await MovieDataSource.instance.loadMovies("popular");
           print("PopularBloc - populars data : $populars ");
 
           if (populars.containsKey("results")) {
-//            List<MoviePopularResult> results = [];
-//            for (var resultsJson in populars["results"]) {
-//              try {
-//                final result = MoviePopularResult().fromJson(resultsJson);
-//                results.add(result);
-//              } catch (e) {
-//                print("PopularBloc - error process on $e");
-//              }
-//            }
             final result = MoviePopularEntity().fromJson(populars);
             yield PopularState.onSuccess<MoviePopularEntity>(result);
           } else {
@@ -51,26 +42,5 @@ class PopularBloc extends Bloc<PopularEvent, PopularState> {
       case PopularEventStatus.DETAIL:
         break;
     }
-
-//    if (event is PopularEventIdle) {
-//      print("PopularBloc - PopularEventIdle true");
-//      yield PopularFetchLoadingState();
-//
-//      //result is json
-//      final result = await MovieDataSource.loadPopularMovies();
-//
-//      if (result != null) {
-//        print("PopularBloc - result not null , result : $result");
-//        final populars = MoviePopularEntity().fromJson(result);
-//        print("PopularBloc : populars data = $populars ");
-//        yield PopularFetchedState(populars);
-//      } else {
-//        print("PopularBloc - result null , result : $result");
-//        yield PopularFetchFailedState();
-//      }
-//    } else {
-//      print("PopularBloc - error event ");
-//      yield PopularFetchFailedState();
-//    }
   }
 }

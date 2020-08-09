@@ -1,15 +1,25 @@
 part of 'movie_bloc.dart';
 
-@immutable
-abstract class MovieEvent {}
+class MovieEvent {
+  MovieEventStatus status;
+  String param;
 
-class MovieEventFetchPopular extends MovieEvent {}
+  MovieEvent({@required this.status, @required this.param});
 
-class MovieEventFetchTopRated extends MovieEvent {}
+  static MovieEvent onPopulars() =>
+      MovieEvent(status: MovieEventStatus.POPULARS, param: 'popular');
 
-class MovieEventFetchNowPlaying extends MovieEvent {}
+  static MovieEvent onTopRated(String movieId) =>
+      MovieEvent(status: MovieEventStatus.TOP_RATED, param: 'top_rated');
 
-class MovieEventFetchLatest extends MovieEvent {}
+  static MovieEvent onNowPlaying() =>
+      MovieEvent(status: MovieEventStatus.NOW_PLAYING, param: 'now_playing');
 
-class MovieEventFetchUpcoming extends MovieEvent {}
+  static MovieEvent onLatest() =>
+      MovieEvent(status: MovieEventStatus.LATEST, param: 'latest');
 
+  static MovieEvent onUpcoming() =>
+      MovieEvent(status: MovieEventStatus.UPCOMING, param: 'upcoming');
+}
+
+enum MovieEventStatus { POPULARS, TOP_RATED, NOW_PLAYING, LATEST, UPCOMING}

@@ -14,46 +14,20 @@ class SelectedTagView extends StatefulWidget {
 }
 
 class _SelectedTagViewState extends State<SelectedTagView> {
-
   MovieBloc movieBloc;
 
   @override
   void initState() {
     movieBloc = BlocProvider.of<MovieBloc>(context);
-    movieBloc.add(MovieEventFetchPopular());
+    movieBloc.add(MovieEvent.onPopulars());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MovieBloc, MovieState>(builder: (context, state) {
-      if (state is MovieStateIsLoading) {
-        return _onLoading();
-      } else if (state is MovieStateIsNotLoaded) {
-        return _onError();
-      } else if (state is MovieStatePopularFetched) {
-        return Center(
-          child: Text(state.moviePopularEntity.toString()),
-        );
-      } else if (state is MovieStateTopRatedFetched) {
-        return Center(
-          child: Text(state.status.toString()),
-        );
-      } else if (state is MovieStateNowPlayingFetched) {
-        return Center(
-          child: Text(state.status.toString()),
-        );
-      } else if (state is MovieStateLatestFetched) {
-        return Center(
-          child: Text(state.status.toString()),
-        );
-      } else if (state is MovieStateUpcomingFetched) {
-        return Center(
-          child: Text(state.status.toString()),
-        );
-      } else {
-        return Container();
-      }
+      print("SelectedtagView - activetags : ${widget.activeTags}");
+      return _onLoading();
     });
   }
 

@@ -5,8 +5,8 @@ class MovieDataSource {
 
   static MovieDataSource instance = MovieDataSource();
 
-  Future<Map<String, dynamic>> loadPopularMovies() {
-    return BaseNetwork.get("movie/popular");
+  Future<Map<String, dynamic>> loadMovies(String param) {
+    return BaseNetwork.get("movie/$param");
   }
 
   String loadImagePoster(String imageUrl) {

@@ -1,48 +1,23 @@
 part of 'movie_bloc.dart';
 
-@immutable
-abstract class MovieState {}
+class MovieState<T> {
+  MovieStateStatus status;
+  T data;
+  String errorMessage;
 
-class MovieStateFetchingPopular extends MovieState {}
+  MovieState({@required this.status, this.data, this.errorMessage});
 
-class MovieStateFetchingTopRated extends MovieState {}
+  static MovieState initial<T>() =>
+      MovieState(status: MovieStateStatus.INITIAL);
 
-class MovieStateFetchingNowPlaying extends MovieState {}
+  static MovieState onSuccess<T>(T data) =>
+      MovieState(status: MovieStateStatus.SUCCESS, data: data);
 
-class MovieStateFetchingLatest extends MovieState {}
+  static MovieState onError<T>(String errorMessage) =>
+      MovieState(status: MovieStateStatus.ERROR, errorMessage: errorMessage);
 
-class MovieStateFetchingUpcoming extends MovieState {}
-
-class MovieStateIsLoading extends MovieState {}
-
-class MovieStateIsNotLoaded extends MovieState {}
-
-class MovieStatePopularFetched extends MovieState {
-  final MoviePopularEntity moviePopularEntity;
-
-  MovieStatePopularFetched(this.moviePopularEntity);
+  static MovieState onLoading<T>() =>
+      MovieState(status: MovieStateStatus.LOADING);
 }
 
-class MovieStateTopRatedFetched extends MovieState {
-  final String status;
-
-  MovieStateTopRatedFetched({this.status = "toprated"});
-}
-
-class MovieStateNowPlayingFetched extends MovieState {
-  final String status;
-
-  MovieStateNowPlayingFetched({this.status = "nowplaying"});
-}
-
-class MovieStateLatestFetched extends MovieState {
-  final String status;
-
-  MovieStateLatestFetched({this.status = "latest"});
-}
-
-class MovieStateUpcomingFetched extends MovieState {
-  final String status;
-
-  MovieStateUpcomingFetched({this.status = "upcoming"});
-}
+enum MovieStateStatus { INITIAL, LOADING, SUCCESS, ERROR }
