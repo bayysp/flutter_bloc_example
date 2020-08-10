@@ -22,17 +22,16 @@ class PopularBloc extends Bloc<PopularEvent, PopularState> {
     switch (event.status) {
       case PopularEventStatus.DEFAULT:
         yield PopularState.onLoading<MoviePopularEntity>();
-
         try {
           final populars = await MovieDataSource.instance.loadMovies("popular");
           print("PopularBloc - populars data : $populars ");
 
-          if (populars.containsKey("results")) {
-            final result = MoviePopularEntity().fromJson(populars);
-            yield PopularState.onSuccess<MoviePopularEntity>(result);
-          } else {
+          if (populars["success"] == false) {
             yield PopularState.onError<MoviePopularEntity>(
                 populars["status_message"]);
+          } else {
+            yield PopularState.onSuccess<MoviePopularEntity>(
+                MoviePopularEntity().fromJson(populars));
           }
         } on NetworkError {
           yield PopularState.onError<MoviePopularEntity>("Network Error");

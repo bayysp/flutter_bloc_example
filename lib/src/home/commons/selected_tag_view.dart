@@ -6,7 +6,9 @@ import 'package:flutterrxdart/src/utils/constant.dart';
 
 class SelectedTagView extends StatefulWidget {
   final activeTags;
-  const SelectedTagView({Key key, this.activeTags}) : super(key: key);
+  final MovieEvent movieEvent;
+
+  const SelectedTagView({Key key, this.activeTags, this.movieEvent}) : super(key: key);
 
   @override
   _SelectedTagViewState createState() => _SelectedTagViewState();
@@ -17,17 +19,21 @@ class _SelectedTagViewState extends State<SelectedTagView> {
 
   @override
   void initState() {
+    print("SelectedTagView - onInitState");
     movieBloc = BlocProvider.of<MovieBloc>(context);
-    movieBloc.add(MovieEvent.onPopulars());
+    movieBloc.add(widget.movieEvent);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    movieBloc.add(widget.movieEvent);
+
     return BlocBuilder<MovieBloc, MovieState>(builder: (context, state) {
       print("SelectedtagView - activetags : ${widget.activeTags}");
+      print("SelectedtagView - movieEvent : ${widget.movieEvent.status}");
 
-      switch(state.status){
+      switch (state.status) {
         case MovieStateStatus.SUCCESS:
           return Text(state.data.toString());
           break;
@@ -37,7 +43,7 @@ class _SelectedTagViewState extends State<SelectedTagView> {
           break;
 
         case MovieStateStatus.ERROR:
-          return _onError();
+          return _onError(state.errorMessage);
           break;
 
         default:
@@ -56,11 +62,11 @@ class _SelectedTagViewState extends State<SelectedTagView> {
     );
   }
 
-  Widget _onError() {
+  Widget _onError(String errorMessage) {
     return Container(
       color: Colors.white,
       child: Center(
-        child: Text("Error Fetched"),
+        child: Text("Error message : $errorMessage"),
       ),
     );
   }
@@ -87,4 +93,21 @@ class _SelectedTagViewState extends State<SelectedTagView> {
   Widget _buildMovieList() {
     return Container();
   }
+
+//  void onChangeMovieEvent() {
+//    print("SelectedTagView - onChangeMovieEvent");
+//    if (widget.activeTags == 0) {
+//      movieBloc.add(MovieEvent.onPopulars());
+//    } else if (widget.activeTags == 1) {
+//      movieBloc.add(MovieEvent.onTopRated());
+//    } else if (widget.activeTags == 2) {
+//      movieBloc.add(MovieEvent.onNowPlaying());
+//    } else if (widget.activeTags == 3) {
+//      movieBloc.add((MovieEvent.onLatest()));
+//    } else if (widget.activeTags == 4) {
+//      movieBloc.add(MovieEvent.onUpcoming());
+//    } else {
+//      movieBloc.add(MovieEvent.onPopulars());
+//    }
+//  }
 }

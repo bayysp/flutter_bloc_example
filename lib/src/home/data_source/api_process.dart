@@ -8,8 +8,8 @@ class ApiProcess{
       Duration(seconds: 1),
       () {
         if (jsonResult.containsKey("results")) {
-          final product = MoviePopularEntity().fromJson(jsonResult["results"]);
-          return product;
+          final data = MoviePopularEntity().fromJson(jsonResult["results"]);
+          return data;
         }
 
         if (jsonResult["code"] != 200) {

@@ -27,15 +27,15 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
       case MovieEventStatus.POPULARS:
         yield MovieState.onLoading<MoviePopularEntity>();
         try {
-          final data = await MovieDataSource.instance.loadMovies(event.param);
-          print("MovieBloc - movies popular data : $data ");
+          final data = await MovieDataSource.instance.loadMovies("popular");
+          print("PopularBloc - populars data : $data ");
 
-          if (data.containsKey("results")) {
-            final result = MoviePopularEntity().fromJson(data);
-            yield MovieState.onSuccess<MoviePopularEntity>(result);
-          } else {
+          if (data["results"] == null) {
             yield MovieState.onError<MoviePopularEntity>(
                 data["status_message"]);
+          } else {
+            yield MovieState.onSuccess<MoviePopularEntity>(
+                MoviePopularEntity().fromJson(data));
           }
         } on NetworkError {
           yield MovieState.onError<MoviePopularEntity>("Network Error");
@@ -48,12 +48,12 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
           final data = await MovieDataSource.instance.loadMovies(event.param);
           print("MovieBloc - movie toprated data : $data ");
 
-          if (data.containsKey("results")) {
-            final result = MovieTopRatedEntity().fromJson(data) ;
-            yield MovieState.onSuccess<MovieTopRatedEntity>(result);
-          } else {
+          if (data["results"] == null) {
             yield MovieState.onError<MovieTopRatedEntity>(
                 data["status_message"]);
+          } else {
+            yield MovieState.onSuccess<MovieTopRatedEntity>(
+                MovieTopRatedEntity().fromJson(data));
           }
         } on NetworkError {
           yield MovieState.onError<MovieTopRatedEntity>("Network Error");
@@ -66,12 +66,12 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
           final data = await MovieDataSource.instance.loadMovies(event.param);
           print("MovieBloc - movie nowplaying data : $data ");
 
-          if (data.containsKey("results")) {
-            final result = MovieNowPlayingEntity().fromJson(data);
-            yield MovieState.onSuccess<MovieNowPlayingEntity>(result);
-          } else {
+          if (data["results"] == null) {
             yield MovieState.onError<MovieNowPlayingEntity>(
                 data["status_message"]);
+          } else {
+            yield MovieState.onSuccess<MovieNowPlayingEntity>(
+                MovieNowPlayingEntity().fromJson(data));
           }
         } on NetworkError {
           yield MovieState.onError<MovieNowPlayingEntity>("Network Error");
@@ -84,12 +84,11 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
           final data = await MovieDataSource.instance.loadMovies(event.param);
           print("MovieBloc - movie latest data : $data ");
 
-          if (data.containsKey("results")) {
-            final result = MovieLatestEntity().fromJson(data);
-            yield MovieState.onSuccess<MovieLatestEntity>(result);
+          if (data.containsKey("success") != null && data["success"] == false) {
+            yield MovieState.onError<MovieLatestEntity>(data["status_message"]);
           } else {
-            yield MovieState.onError<MovieLatestEntity>(
-                data["status_message"]);
+            yield MovieState.onSuccess<MovieLatestEntity>(
+                MovieLatestEntity().fromJson(data));
           }
         } on NetworkError {
           yield MovieState.onError<MovieLatestEntity>("Network Error");
@@ -102,12 +101,12 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
           final data = await MovieDataSource.instance.loadMovies(event.param);
           print("MovieBloc - movie upcoming data : $data ");
 
-          if (data.containsKey("results")) {
-            final result = MovieUpcomingEntity().fromJson(data);
-            yield MovieState.onSuccess<MovieUpcomingEntity>(result);
-          } else {
+          if (data["results"] == null) {
             yield MovieState.onError<MovieUpcomingEntity>(
                 data["status_message"]);
+          } else {
+            yield MovieState.onSuccess<MovieUpcomingEntity>(
+                MovieUpcomingEntity().fromJson(data));
           }
         } on NetworkError {
           yield MovieState.onError<MovieUpcomingEntity>("Network Error");

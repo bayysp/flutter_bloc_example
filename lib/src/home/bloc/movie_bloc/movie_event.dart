@@ -9,7 +9,7 @@ class MovieEvent {
   static MovieEvent onPopulars() =>
       MovieEvent(status: MovieEventStatus.POPULARS, param: 'popular');
 
-  static MovieEvent onTopRated(String movieId) =>
+  static MovieEvent onTopRated() =>
       MovieEvent(status: MovieEventStatus.TOP_RATED, param: 'top_rated');
 
   static MovieEvent onNowPlaying() =>

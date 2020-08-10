@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutterrxdart/src/home/model/movie_popular_entity.dart';
 
+import 'network_error.dart';
+
 class BaseNetwork {
   static final String baseUrl = "https://api.themoviedb.org/3";
   static final String baseBackdropUrl = "https://image.tmdb.org/t/p/w780/";
@@ -15,13 +17,22 @@ class BaseNetwork {
 
     final response = await http.get(fullUrl);
     print("BaseNetwork - response : $response");
+    return _processResponse(response);
+  }
 
-    if (response.statusCode == 200) {
-      print("BaseNetwork - status code 200, response.body : ${response.body}");
-      return json.decode(response.body);
-    } else {
-      print("BaseNetwork  - status code not 200 : ${response.statusCode}");
-      return json.decode(response.body);
-    }
+  static Future<Map<String, dynamic>> _processResponse(
+      http.Response response) async {
+    return Future.delayed(
+      Duration(seconds: 1),
+      () {
+        final body = response.body ?? "";
+        if (body.isNotEmpty) {
+          final jsonBody = json.decode(body);
+          return jsonBody;
+        } else {
+          return {"error": true};
+        }
+      },
+    );
   }
 }

@@ -23,16 +23,21 @@ class _PopularPageViewState extends State<PopularPageView> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height / 3.2,
-      child: PageView.builder(
-          controller: pageController,
-          itemCount: 5,
-          onPageChanged: (int index) {
-            _currentPageNotifier.value = index;
-            print("pageview changed value to ${_currentPageNotifier.value}");
-          },
-          itemBuilder: (context, index) {
-            return _buildItemPoster(context, index);
-          }),
+      child: widget.populars != null
+          ? PageView.builder(
+              controller: pageController,
+              itemCount: 5,
+              onPageChanged: (int index) {
+                _currentPageNotifier.value = index;
+                print(
+                    "pageview changed value to ${_currentPageNotifier.value}");
+              },
+              itemBuilder: (context, index) {
+                return _buildItemPoster(context, index);
+              })
+          : Center(
+              child: Text("Error"),
+            ),
     );
   }
 
